@@ -2,6 +2,7 @@ import CustomFilter from '@/components/CustomFilter'
 import Hero from '@/components/Hero'
 import SearchBar from '@/components/SearchBar'
 import { fetchCars } from '@/utils/indes'
+import CarCard from '@/components/CarCard'
 import Image from 'next/image'
 
 export default async function Home() {
@@ -28,11 +29,14 @@ export default async function Home() {
       </div>
       {!isDataEmpty?(
         <section>
+          <div className="home_cars-wrapper">
+            {allCars?.map((car)=> <CarCard car={car}/>)}
+          </div>
           WE HAVE CARS
         </section>
       ):(
         <div className="home__error-container">
-          <h2>Oops, no results</h2>
+          <h2 className='text-black text-xl font-bold'>Oops, no results</h2>
           <p>{allCars?.message}</p>
         </div>
       )}

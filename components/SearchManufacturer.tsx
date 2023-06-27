@@ -1,14 +1,15 @@
-"use client"
-import { SearchManuFacturerProps } from '@/types'
-import React from 'react'
-import { Combobox,Transition } from '@headlessui/react'
-import Image from 'next/image'
-import { useState ,Fragment} from 'react'
-import { manufacturers } from '@/constants'
+import Image from "next/image";
+import { Fragment, useState } from "react";
+import { Combobox, Transition } from "@headlessui/react";
 
-const SearchManufacturer = ({manufacturer, setManufacturer}:SearchManuFacturerProps) => {
-    const [query, setQuery] = useState("")
-    const filteredManufacturers =
+
+import { manufacturers } from "@/constants";
+import { SearchManuFacturerProps } from "@/types";
+
+const SearchManufacturer = ({ manufacturer, setManuFacturer }: SearchManuFacturerProps) => {
+  const [query, setQuery] = useState("");
+
+  const filteredManufacturers =
     query === ""
       ? manufacturers
       : manufacturers.filter((item) =>
@@ -20,9 +21,10 @@ const SearchManufacturer = ({manufacturer, setManufacturer}:SearchManuFacturerPr
 
   return (
     <div className='search-manufacturer'>
-      <Combobox value={manufacturer} onChange={setManufacturer}>
-        <div className="relative w-full">
-        <Combobox.Button className='absolute top-[14px]'>
+      <Combobox value={manufacturer} onChange={setManuFacturer}>
+        <div className='relative w-full'>
+          {/* Button for the combobox. Click on the icon to see the complete dropdown */}
+          <Combobox.Button className='absolute top-[14px]'>
             <Image
               src='/car-logo.svg'
               width={20}
@@ -31,22 +33,24 @@ const SearchManufacturer = ({manufacturer, setManufacturer}:SearchManuFacturerPr
               alt='car logo'
             />
           </Combobox.Button>
-             {/* Input field for searching */}
-             <Combobox.Input
+
+          {/* Input field for searching */}
+          <Combobox.Input
             className='search-manufacturer__input'
             displayValue={(item: string) => item}
             onChange={(event) => setQuery(event.target.value)} // Update the search query when the input changes
             placeholder='Volkswagen...'
           />
-           <Transition
-  as="div" // Use a div instead of a Fragment
-  leave="transition ease-in duration-100"
-  leaveFrom="opacity-100"
-  leaveTo="opacity-0"
-  afterLeave={() => setQuery("")}
-></Transition>
 
-          <Combobox.Options
+          {/* Transition for displaying the options */}
+          <Transition
+            as={Fragment} // group multiple elements without introducing an additional DOM node i.e., <></>
+            leave='transition ease-in duration-100'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+            afterLeave={() => setQuery("")} // Reset the search query after the transition completes
+          >
+            <Combobox.Options
               className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
               static
             >
@@ -85,11 +89,11 @@ const SearchManufacturer = ({manufacturer, setManufacturer}:SearchManuFacturerPr
                 ))
               )}
             </Combobox.Options>
-
+          </Transition>
         </div>
-     </Combobox>
+      </Combobox>
     </div>
-  )
-}
+  );
+};
 
-export default SearchManufacturer
+export default SearchManufacturer;
